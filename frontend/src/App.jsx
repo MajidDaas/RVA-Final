@@ -14,7 +14,6 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [selectedIds, setSelectedIds] = useState([]);
   const dragIndex = useRef(null);
-
   const MAX_PICKS = 14;
 
   const filtered = useMemo(() => {
@@ -99,6 +98,7 @@ export default function App() {
         </header>
 
         <main className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Candidate grid */}
           <section className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <input
@@ -143,6 +143,7 @@ export default function App() {
                         </div>
                       </div>
                     </div>
+
                     <div className="mt-4 flex items-center gap-2">
                       <button
                         onClick={() => addCandidate(c.id)}
@@ -150,7 +151,11 @@ export default function App() {
                       >
                         {isSelected ? "Selected" : "Add"}
                       </button>
-                      {isSelected && <button onClick={() => removeCandidate(c.id)} className="px-3 py-2 rounded-lg bg-red-50 text-red-600">Remove</button>}
+                      {isSelected && (
+                        <button onClick={() => removeCandidate(c.id)} className="px-3 py-2 rounded-lg bg-red-50 text-red-600">
+                          Remove
+                        </button>
+                      )}
                     </div>
                   </motion.article>
                 );
@@ -158,6 +163,7 @@ export default function App() {
             </div>
           </section>
 
+          {/* Ranked list */}
           <aside className="bg-white rounded-2xl p-4 shadow-sm">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">Your Ranked List</h2>
@@ -184,4 +190,49 @@ export default function App() {
                       <div className="w-10 h-10 rounded-md flex items-center justify-center bg-white border">{idx + 1}</div>
                       <div className="flex-1">
                         <div className="font-medium">{c.name}</div>
-                       
+                        <div className="text-xs text-slate-500">{c.party}</div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button onClick={() => removeCandidate(id)} className="px-3 py-1 rounded-lg text-sm bg-red-50 text-red-600">
+                          Remove
+                        </button>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+              {selectedIds.length === 0 && <div className="text-sm text-slate-500">No selections yet — click "Add" on the left to choose candidates.</div>}
+            </div>
+
+            <div className="mt-4 text-xs text-slate-500">
+              Selected <strong>{selectedIds.length}</strong> / {MAX_PICKS}. Top ranks carry more weight.
+            </div>
+
+            <div className="mt-6 flex gap-2">
+              <button onClick={submitVote} className="flex-1 px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700">
+                Submit vote
+              </button>
+              <button onClick={() => setSelectedIds([])} className="px-4 py-2 rounded-xl bg-white border">
+                Clear
+              </button>
+            </div>
+          </aside>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+/* Flash hook */
+function useFlash() {
+  const [flash, setFlash] = useState(null);
+  function warn(text) {
+    setFlash({ type: "warn", text });
+    setTimeout(() => setFlash(null), 2600);
+  }
+  function ok(text) {
+    setFlash({ type: "ok", text });
+    setTimeout(() => setFlash(null), 2600);
+  }
+  return { warn, ok };
+}
