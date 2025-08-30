@@ -1,17 +1,15 @@
-/* frontend/src/index.css */
-
-/* Tailwind base, components, and utilities */
+/* Tailwind base, components, utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Optional global styles */
+/* Global styles */
 html, body {
   margin: 0;
   padding: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: #f8fafc; /* matches bg-slate-50 */
-  color: #111827; /* matches text-slate-900 */
+  background-color: #f8fafc; /* bg-slate-50 */
+  color: #111827; /* text-slate-900 */
 }
 
 a {
@@ -29,7 +27,7 @@ input, select, textarea {
   font-family: inherit;
 }
 
-/* Scrollbar styles (optional, modern look) */
+/* Optional scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
